@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils.translation import ugettext_lazy as _, ugettext
+from persons.models import Person
+import vobject
 
 # TODO x2: python-vobject in fedora <- are we tracking distribution locations somewhere?
 # readme file? buildout should have this too.
 
-import vobject
 
-from django.db import models
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_lazy as _, ugettext
-from persons.models import Person
 
 class Event(models.Model):
     ''' holds the when, who, what, where and which fields of events
@@ -46,12 +47,11 @@ class Event(models.Model):
     def which(self):
         return self.which_object and unicode(self.which_object) or self.what
 
-    # TODO: fix this
     def get_absolute_url(self):
         if self.which_object:
             return '%s#event-%d' % (self.which_object.get_absolute_url(), self.id)
         else:
-            return '#'
+            return reverse('event-detail', args=[str(self.id)])
 
     def add_vevent_to_ical(self, cal, summary_length):
         """

@@ -49,11 +49,13 @@
         </ul>
         <footer>
         {% if events_more %}
+        {% comment %}
         <button class="btn btn-mini btn-expand" data-provide="okmore"
             data-loading-text="{% trans "Loading" %} ..."
             autocomplete="off" data-target="#upcoming-events" 
             data-url="{% url more-upcoming-events %}"
             data-initial="{{INITIAL_DATA}}">{% trans "More" %} +</button>
+        {% endcomment %}
         {% endif %}
         </footer>
       </div>
